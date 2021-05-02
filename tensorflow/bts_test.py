@@ -119,7 +119,7 @@ def test(params):
 
         start_time = time.time()
         print('Processing images..')
-        for s in tqdm(range(num_test_samples)):
+        for s in tqdm.tqdm(range(num_test_samples)):
             depth, pred_8x8, pred_4x4, pred_2x2 = sess.run([model.depth_est, model.lpg8x8, model.lpg4x4, model.lpg2x2])
             pred_depths.append(depth[0].squeeze())
 
@@ -143,7 +143,7 @@ def test(params):
                 if e.errno != errno.EEXIST:
                     raise
 
-        for s in tqdm(range(num_test_samples)):
+        for s in tqdm.tqdm(range(num_test_samples)):
             if args.dataset == 'kitti':
                 date_drive = lines[s].split('/')[1]
                 filename_pred_png = save_name + '/raw/' + date_drive + '_' + lines[s].split()[0].split('/')[-1].replace('.jpg', '.png')
