@@ -18,8 +18,8 @@ from __future__ import absolute_import, division, print_function
 from collections import namedtuple
 
 import numpy as np
-import tensorflow as tf
-import tensorflow.contrib.slim as slim
+import tensorflow.compat.v1 as tf
+import tf_slim as slim
 import sys
 
 sys.path.append("./custom_layer/")

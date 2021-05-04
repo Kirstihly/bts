@@ -15,7 +15,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>
 
 from __future__ import absolute_import, division, print_function
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+import tensorflow_addons as tfa
 from tensorflow.python.ops import array_ops
 
 
@@ -43,7 +45,7 @@ class BtsDataloader(object):
             mini_batch_size = int(self.params.batch_size / self.params.num_gpus)
 
             self.loader = tf.data.Dataset.from_tensor_slices(filenames)
-            self.loader = self.loader.apply(tf.contrib.data.shuffle_and_repeat(len(filenames)))
+            self.loader = self.loader.apply(tf.data.experimental.shuffle_and_repeat(len(filenames)))
             self.loader = self.loader.map(self.parse_function_train, num_parallel_calls=params.num_threads)
             self.loader = self.loader.map(self.train_preprocess, num_parallel_calls=params.num_threads)
             self.loader = self.loader.batch(mini_batch_size)
@@ -125,8 +127,8 @@ class BtsDataloader(object):
 
         if self.do_rotate is True:
             random_angle = tf.random_uniform([], - self.degree * 3.141592 / 180, self.degree * 3.141592 / 180)
-            image = tf.contrib.image.rotate(image, random_angle, interpolation='BILINEAR')
-            depth_gt = tf.contrib.image.rotate(depth_gt, random_angle, interpolation='NEAREST')
+            image = tfa.image.rotate(image, random_angle, interpolation='BILINEAR')
+            depth_gt = tfa.image.rotate(depth_gt, random_angle, interpolation='NEAREST')
 
         print('Do random cropping from fixed size input')
         image, depth_gt = self.random_crop_fixed_size(image, depth_gt)

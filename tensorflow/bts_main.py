@@ -23,7 +23,6 @@ import datetime
 import sys
 
 from average_gradients import *
-from tensorflow.python import pywrap_tensorflow
 from bts_dataloader import *
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
@@ -95,7 +94,7 @@ def get_num_lines(file_path):
 def get_tensors_in_checkpoint_file(file_name, all_tensors=True, tensor_name=None):
     varlist = []
     var_value = []
-    reader = pywrap_tensorflow.NewCheckpointReader(file_name)
+    reader = tf.train.NewCheckpointReader(file_name)
     if all_tensors:
       var_to_shape_map = reader.get_variable_to_shape_map()
       for key in sorted(var_to_shape_map):
